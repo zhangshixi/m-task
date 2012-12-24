@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tasks>
+
+	<global-configs>
+		<config id="jmxMonitoring">true</config>
+		<config id="executeThreadPoolSize" value="2" />
+	</global-configs>
+	
+	<global-listeners>
+		<listener></listener>
+		<listener></listener>
+	</global-listeners>
+	
+	<task id="task-simple" type="simple">
+		<repeatCount></repeatCount>
+		<repeatInterval></repeatInterval>
+		<hanlder></hanlder>
+		<listeners>
+			<listener></listener>
+			<listener></listener>
+		</listeners>
+	</task>
+	
+	<task id="task-cron" type="cron">
+		<cronExpression></cronExpression>
+		<hanlder></hanlder>
+		<listeners>
+			<listener></listener>
+			<listener></listener>
+		</listeners>
+	</task>
+	
+</tasks>

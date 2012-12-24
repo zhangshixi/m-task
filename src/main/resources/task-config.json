@@ -1,0 +1,11 @@
+"tasks" : [
+	{
+		"id" : "task-a",
+		"type" : "simple",
+		"cronExpression" : ""
+	},
+	{
+		"id" : "task-b",
+		"cronExpression" : ""
+	}
+]
