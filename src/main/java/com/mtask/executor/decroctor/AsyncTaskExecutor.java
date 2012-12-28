@@ -6,43 +6,42 @@ import java.util.concurrent.Executors;
 import com.mtask.Task;
 import com.mtask.executor.TaskExecutor;
 
-public class AsyncTaskExecutor implements TaskExecutor {
+public class AsyncTaskExecutor extends DecrocteTaskExecutor {
 
-	private TaskExecutor taskExecutor;
 	private ExecutorService threadPool = Executors.newCachedThreadPool();
 	
 	public AsyncTaskExecutor(TaskExecutor taskExecutor) {
-		this.taskExecutor = taskExecutor;
+		super(taskExecutor);
 	}
 	
 	@Override
 	public void add(Task task) throws Exception {
-		this.taskExecutor.add(task);
+		getDelagateTaskExecutor().add(task);
 	}
 
 	@Override
 	public void activity(String taskId) throws Exception {
-		this.taskExecutor.activity(taskId);
+		getDelagateTaskExecutor().activity(taskId);
 	}
 
 	@Override
 	public void pause(String taskId) throws Exception {
-		this.taskExecutor.pause(taskId);
+		getDelagateTaskExecutor().pause(taskId);
 	}
 
 	@Override
 	public void resume(String taskId) throws Exception {
-		this.taskExecutor.resume(taskId);
+		getDelagateTaskExecutor().resume(taskId);
 	}
 
 	@Override
 	public void execute(String taskId) throws Exception {
-		this.threadPool.submit(new ExecuteThread(taskId, this.taskExecutor));
+		this.threadPool.submit(new ExecuteThread(taskId, getDelagateTaskExecutor()));
 	}
 
 	@Override
 	public void remove(String taskId) throws Exception {
-		this.taskExecutor.remove(taskId);
+		getDelagateTaskExecutor().remove(taskId);
 	}
 
 	// ---- inner classes ---------------------------------------------------

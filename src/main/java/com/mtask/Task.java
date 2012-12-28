@@ -6,10 +6,10 @@ public abstract class Task {
 	
 	private String _id;
 	// private String _group; // TODO: unsupported
-	private TaskHandler _callbackHandler;
 	private Date startTime;
 	private Date endTime;
 	private String description;
+	private TaskHandler _callbackHandler;
 	
 	
 	public Task(String id) {

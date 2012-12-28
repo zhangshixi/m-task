@@ -4,6 +4,10 @@ import com.mtask.Task;
 
 public interface TaskExecutor {
 	
+    public void startup();
+    
+    public void startupDelayed(int seconds);
+    
 	public void add(Task task) throws Exception;
 	
 	public void activity(String taskId) throws Exception;
@@ -15,5 +19,9 @@ public interface TaskExecutor {
 	public void execute(String taskId) throws Exception;
 	
 	public void remove(String taskId) throws Exception;
+	
+	public void shutdown();
+	
+	public void shutdownNow();
 	
 }

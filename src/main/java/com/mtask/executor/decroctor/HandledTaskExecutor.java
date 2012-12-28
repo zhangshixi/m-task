@@ -4,20 +4,19 @@ import com.mtask.Task;
 import com.mtask.error.ExecuteErrorHandler;
 import com.mtask.executor.TaskExecutor;
 
-public class HandledTaskExecutor implements TaskExecutor {
+public class HandledTaskExecutor extends DecrocteTaskExecutor {
 	
-	private TaskExecutor taskExecutor;
 	private ExecuteErrorHandler[] errorHandlers;
 	
 	public HandledTaskExecutor(TaskExecutor taskExecutor, ExecuteErrorHandler... errorHandlers) {
-		this.taskExecutor = taskExecutor;
+		super(taskExecutor);
 		this.errorHandlers = errorHandlers;
 	}
 
 	@Override
 	public void add(Task task) throws Exception {
 		try {
-			this.taskExecutor.add(task);
+			getDelagateTaskExecutor().add(task);
 		} catch (Exception ex) {
 			callbackErrorHandlers(task.getId(), ex);
 			throw ex;
@@ -27,7 +26,7 @@ public class HandledTaskExecutor implements TaskExecutor {
 	@Override
 	public void activity(String taskId) throws Exception {
 		try {
-			this.taskExecutor.activity(taskId);
+			getDelagateTaskExecutor().activity(taskId);
 		} catch (Exception ex) {
 			callbackErrorHandlers(taskId, ex);
 			throw ex;
@@ -37,7 +36,7 @@ public class HandledTaskExecutor implements TaskExecutor {
 	@Override
 	public void pause(String taskId) throws Exception {
 		try {
-			this.taskExecutor.pause(taskId);
+			getDelagateTaskExecutor().pause(taskId);
 		} catch (Exception ex) {
 			callbackErrorHandlers(taskId, ex);
 			throw ex;
@@ -47,7 +46,7 @@ public class HandledTaskExecutor implements TaskExecutor {
 	@Override
 	public void resume(String taskId) throws Exception {
 		try {
-			this.taskExecutor.resume(taskId);
+			getDelagateTaskExecutor().resume(taskId);
 		} catch (Exception ex) {
 			callbackErrorHandlers(taskId, ex);
 			throw ex;
@@ -57,7 +56,7 @@ public class HandledTaskExecutor implements TaskExecutor {
 	@Override
 	public void execute(String taskId) throws Exception {
 		try {
-			this.taskExecutor.execute(taskId);
+			getDelagateTaskExecutor().execute(taskId);
 		} catch (Exception ex) {
 			callbackErrorHandlers(taskId, ex);
 			throw ex;
@@ -67,7 +66,7 @@ public class HandledTaskExecutor implements TaskExecutor {
 	@Override
 	public void remove(String taskId) throws Exception {
 		try {
-			this.taskExecutor.remove(taskId);
+			getDelagateTaskExecutor().remove(taskId);
 		} catch (Exception ex) {
 			callbackErrorHandlers(taskId, ex);
 			throw ex;

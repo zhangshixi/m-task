@@ -1,8 +1,13 @@
 "tasks" : [
 	{
 		"id" : "task-a",
+		"startTime" : "",
+		"endTime" : "",
+		"description" : "task description",
 		"type" : "simple",
-		"cronExpression" : ""
+		"cronExpression" : "",
+		"repeatCount" : 2,
+		"repeatInterval" : 10
 	},
 	{
 		"id" : "task-b",

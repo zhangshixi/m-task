@@ -7,14 +7,13 @@ import com.mtask.Task;
 import com.mtask.event.EventListener;
 import com.mtask.executor.TaskExecutor;
 
-public class ListenedTaskExecutor implements TaskExecutor {
+public class ListenedTaskExecutor extends DecrocteTaskExecutor {
 
-	private TaskExecutor taskExecutor;
 	private EventListener[] globalListeners;
 	private Map<String, EventListener[]> taskListenersMap = new HashMap<>();
 	
 	public ListenedTaskExecutor(TaskExecutor taskExecutor, EventListener... globalListeners) {
-		this.taskExecutor = taskExecutor;
+		super(taskExecutor);
 		this.globalListeners = globalListeners;
 	}
 	
@@ -31,7 +30,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.add(task);
+		getDelagateTaskExecutor().add(task);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterAdded(task);
@@ -56,7 +55,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.activity(taskId);
+		getDelagateTaskExecutor().activity(taskId);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterActivitied(taskId);
@@ -81,7 +80,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.pause(taskId);
+		getDelagateTaskExecutor().pause(taskId);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterPaused(taskId);
@@ -106,7 +105,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.resume(taskId);
+		getDelagateTaskExecutor().resume(taskId);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterResumed(taskId);
@@ -131,7 +130,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.execute(taskId);
+		getDelagateTaskExecutor().execute(taskId);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterExecuted(taskId);
@@ -156,7 +155,7 @@ public class ListenedTaskExecutor implements TaskExecutor {
 			}
 		}
 		
-		this.taskExecutor.remove(taskId);
+		getDelagateTaskExecutor().remove(taskId);
 		
 		for (EventListener listener : globalListeners) {
 			listener.afterRemoved(taskId);

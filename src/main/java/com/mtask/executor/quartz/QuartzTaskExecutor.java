@@ -21,15 +21,17 @@ import com.mtask.task.SimpleTask;
 public class QuartzTaskExecutor implements TaskExecutor {
 
 	private Scheduler scheduler;
-	private String schedulerProperties = null; //TODO:
+	
+	public static final String QUARTZ_PROPERTIES = "quartz.properties";
 	
 	public static final String DEF_JOB_GROUP = Scheduler.DEFAULT_GROUP;
 	public static final String DEF_TRIGGER_GROUP = Scheduler.DEFAULT_GROUP;
 	
+	// ---- constructors
 	public QuartzTaskExecutor() {
 		try {
 			StdSchedulerFactory factory = new StdSchedulerFactory();
-			factory.initialize(schedulerProperties);
+			factory.initialize(QUARTZ_PROPERTIES);
 
 			scheduler = factory.getScheduler();
 
@@ -38,23 +40,25 @@ public class QuartzTaskExecutor implements TaskExecutor {
 		}
 	}
 	
+	// ---- implement methods
+	@Override
 	public void startup() {
 		// Scheduler will not execute jobs until it has been started 
 		// (though they can be scheduled before start())
 		try {
-			scheduler.startDelayed(5);
+			scheduler.start();
 		} catch (SchedulerException e) {
 			throw new TaskException(e);
 		}
 	}
 	
-	public void shutdown() {
-		try {
-			//shutdown() does not return until executing Jobs complete execution
-			scheduler.shutdown(true);
-		} catch (SchedulerException e) {
-			throw new TaskException(e);
-		}
+	@Override
+	public void startupDelayed(int seconds) {
+	    try {
+            scheduler.startDelayed(seconds);
+        } catch (SchedulerException e) {
+            throw new TaskException(e);
+        }
 	}
 	
 	@Override
@@ -98,7 +102,7 @@ public class QuartzTaskExecutor implements TaskExecutor {
 			
 		}
 		
-		scheduler.scheduleJob(jobDetail, trigger);
+		scheduler.addJob(jobDetail, true);
 	}
 
 	@Override
@@ -122,7 +126,7 @@ public class QuartzTaskExecutor implements TaskExecutor {
 	@Override
 	public void execute(String taskId) throws Exception {
 		// TODO Auto-generated method stub
-		
+		scheduler.triggerJob(buildJobKey(taskId));
 	}
 
 	@Override
@@ -131,8 +135,27 @@ public class QuartzTaskExecutor implements TaskExecutor {
 		scheduler.deleteJob(JobKey.jobKey("job1", "group1"));
 		scheduler.unscheduleJob(TriggerKey.triggerKey("trigger1", "group1"));
 	}
-	
-	
+
+    @Override
+    public void shutdown() {
+        try {
+            // does not return until executing Jobs complete execution
+            scheduler.shutdown(true);
+        } catch (SchedulerException e) {
+            throw new TaskException(e);
+        }
+    }
+    
+    @Override
+    public void shutdownNow() {
+        try {
+            scheduler.shutdown(false);
+        } catch (SchedulerException e) {
+            throw new TaskException(e);
+        }
+    }
+    
+	// ---- private methods
 	private JobKey buildJobKey(String taskId) {
 		return new JobKey(taskId, DEF_JOB_GROUP);
 	}
