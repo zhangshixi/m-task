@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>com.michael</groupId>
 			<artifactId>m-logger</artifactId>
-			<version>1.0</version>
+			<version>1.0.GA</version>
 			<type>jar</type>
 			<scope>compile</scope>
 			<exclusions>
@@ -114,6 +114,17 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-releases</id>
+			<url>${nexus.host}/nexus/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
 
 	<scm>
 		<tag>HEAD</tag>
